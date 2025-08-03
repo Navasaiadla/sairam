@@ -4,7 +4,7 @@ import HostelCard from '@/components/hostelCard';
 
 export default async function HomePage() {
   // Get all hostels
-  let hostels: Array<{id: string, name: string}> = [];
+  let hostels: any[] = [];
   
   try {
     hostels = await sql`

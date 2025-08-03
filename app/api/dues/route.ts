@@ -101,8 +101,8 @@ export async function PUT(request: Request) {
     }
 
     // Update the due record
-    const updateFields = [];
-    const updateValues = [];
+    const updateFields: string[] = [];
+    const updateValues: any[] = [];
 
     if (paid !== undefined) {
       updateFields.push('paid = $1');
