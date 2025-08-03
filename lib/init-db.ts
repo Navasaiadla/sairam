@@ -4,6 +4,10 @@ import path from 'path';
 
 export async function initializeDatabase() {
   try {
+    if (!sql) {
+      throw new Error('Database not configured');
+    }
+
     console.log('🔄 Initializing database...');
     
     // Read the schema file
@@ -35,6 +39,10 @@ export async function initializeDatabase() {
 // Function to check if tables exist
 export async function checkTablesExist() {
   try {
+    if (!sql) {
+      return false;
+    }
+
     const result = await sql`
       SELECT table_name 
       FROM information_schema.tables 

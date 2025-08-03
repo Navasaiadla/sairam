@@ -3,6 +3,13 @@ import sql from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
+    if (!sql) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      );
+    }
+
     const { customerId, amount = 5000.00, dueDate } = await request.json();
 
     if (!customerId || !dueDate) {

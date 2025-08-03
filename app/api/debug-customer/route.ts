@@ -3,6 +3,13 @@ import sql from '@/lib/db';
 
 export async function GET(request: Request) {
   try {
+    if (!sql) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     let hostelId = searchParams.get('hostelId');
 

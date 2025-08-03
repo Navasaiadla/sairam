@@ -6,6 +6,13 @@ export async function PUT(
   { params }: { params: Promise<{ customerId: string }> }
 ) {
   try {
+    if (!sql) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      );
+    }
+
     const { customerId } = await params;
     const { 
       name, 

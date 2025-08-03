@@ -4,6 +4,10 @@ import { checkTablesExist, initializeDatabase } from '@/lib/init-db';
 
 export async function GET() {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
+    
     // Test the database connection
     const result = await sql`SELECT version()`;
     
@@ -31,6 +35,10 @@ export async function GET() {
 
 export async function POST() {
   try {
+    if (!sql) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
+    
     // Initialize database tables
     await initializeDatabase();
     

@@ -3,6 +3,13 @@ import sql from '@/lib/db';
 
 export async function GET() {
   try {
+    if (!sql) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      );
+    }
+
     // Check if hostels table exists, if not create it
     const tableExists = await sql`
       SELECT EXISTS (
@@ -44,6 +51,13 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    if (!sql) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      );
+    }
+
     const { name } = await request.json();
 
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
@@ -77,6 +91,13 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    if (!sql) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 

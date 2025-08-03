@@ -6,6 +6,13 @@ export async function GET(
   { params }: { params: Promise<{ hostelId: string }> }
 ) {
   try {
+    if (!sql) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      );
+    }
+
     const { hostelId } = await params;
 
     const [hostel] = await sql`

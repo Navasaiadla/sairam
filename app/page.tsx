@@ -7,11 +7,13 @@ export default async function HomePage() {
   let hostels: any[] = [];
   
   try {
-    hostels = await sql`
-      SELECT id, name
-      FROM hostels
-      ORDER BY name ASC
-    `;
+    if (sql) {
+      hostels = await sql`
+        SELECT id, name
+        FROM hostels
+        ORDER BY name ASC
+      `;
+    }
   } catch (error) {
     console.error('Database error:', error);
     // If database is not configured, show empty state
