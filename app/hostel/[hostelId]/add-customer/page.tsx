@@ -32,6 +32,7 @@ export default function AddCustomerPage({ params }: { params: Promise<{ hostelId
   const [course, setCourse] = useState("");
   const [room, setRoom] = useState("");
   const [loading, setLoading] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string | null>(null);
 
   function clearForm() {
     setFullName("");
@@ -48,11 +49,33 @@ export default function AddCustomerPage({ params }: { params: Promise<{ hostelId
     });
   }
 
+  async function testConnection() {
+    try {
+      const response = await fetch(`/api/test-customer?hostelId=${hostelId}`);
+      const data = await response.json();
+      setDebugInfo(JSON.stringify(data, null, 2));
+    } catch (error) {
+      setDebugInfo('Error testing connection: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    }
+  }
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
     
     try {
+      console.log('Submitting customer data:', {
+        name: fullName,
+        phone,
+        fatherPhone,
+        college,
+        course,
+        checkinDate,
+        dueDate,
+        roomNo: room,
+        hostelId,
+      });
+
       const response = await fetch('/api/customers', {
         method: 'POST',
         headers: {
@@ -72,13 +95,14 @@ export default function AddCustomerPage({ params }: { params: Promise<{ hostelId
         }),
       });
 
+      const responseData = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create customer');
+        throw new Error(responseData.error || responseData.details || 'Failed to create customer');
       }
 
-      const result = await response.json();
-      console.log('Customer created successfully:', result);
+      console.log('Customer created successfully:', responseData);
+      alert('Customer created successfully!');
       clearForm();
     } catch (error) {
       console.error('Error creating customer:', error);
@@ -265,6 +289,13 @@ export default function AddCustomerPage({ params }: { params: Promise<{ hostelId
           <div className="flex items-center gap-3">
             <button
               type="button"
+              onClick={testConnection}
+              className="btn-secondary px-4 py-2 text-sm font-medium"
+            >
+              Test Connection
+            </button>
+            <button
+              type="button"
               onClick={clearForm}
               className="btn-secondary px-4 py-2 text-sm font-medium"
             >
@@ -280,6 +311,14 @@ export default function AddCustomerPage({ params }: { params: Promise<{ hostelId
             </button>
           </div>
         </div>
+
+        {/* Debug info */}
+        {debugInfo && (
+          <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+            <h4 className="font-semibold mb-2">Debug Info:</h4>
+            <pre className="text-xs overflow-auto">{debugInfo}</pre>
+          </div>
+        )}
       </form>
     </main>
   );

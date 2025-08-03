@@ -154,4 +154,55 @@ export async function PUT(
       { status: 500 }
     );
   }
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ customerId: string }> }
+) {
+  try {
+    if (!sql) {
+      return NextResponse.json(
+        { error: 'Database not configured' },
+        { status: 500 }
+      );
+    }
+
+    const { customerId } = await params;
+
+    if (!customerId) {
+      return NextResponse.json(
+        { error: 'Customer ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Check if customer exists
+    const existingCustomer = await sql`
+      SELECT id, name FROM customers WHERE id = ${customerId}
+    `;
+
+    if (existingCustomer.length === 0) {
+      return NextResponse.json(
+        { error: 'Customer not found' },
+        { status: 404 }
+      );
+    }
+
+    // Delete the customer (this will cascade to related records like dues)
+    await sql`
+      DELETE FROM customers WHERE id = ${customerId}
+    `;
+
+    return NextResponse.json({ 
+      success: true, 
+      message: `Customer ${existingCustomer[0].name} has been removed from the room`
+    });
+  } catch (error) {
+    console.error('Database error:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete customer', details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    );
+  }
 } 

@@ -68,13 +68,20 @@ export default async function HomePage() {
               ))}
             </div>
             
-            <div className="mt-6 text-center">
+            <div className="mt-6 text-center space-x-4">
               <Link 
                 href="/create-hostel"
                 className="button inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium"
               >
                 <span>➕</span>
                 Create New Hostel
+              </Link>
+              <Link 
+                href="/debug-due"
+                className="button inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium bg-yellow-600 hover:bg-yellow-700"
+              >
+                <span>🔍</span>
+                Debug Dues
               </Link>
             </div>
           </>

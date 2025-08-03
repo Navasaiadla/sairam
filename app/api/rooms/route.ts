@@ -26,8 +26,9 @@ export async function GET(request: Request) {
         COALESCE(
           json_agg(
             json_build_object(
-              'name', c.name,
-              'phone', c.phone,
+              'id', c.id,
+              'name', COALESCE(c.name, 'Unknown Guest'),
+              'phone', COALESCE(c.phone, 'No phone'),
               'checkIn', TO_CHAR(c.checkin_date, 'YYYY-MM-DD')
             )
           ) FILTER (WHERE c.id IS NOT NULL),

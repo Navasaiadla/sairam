@@ -13,11 +13,29 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     let hostelId = searchParams.get('hostelId');
 
+    // If no hostelId provided, return all dues for debugging
     if (!hostelId) {
-      return NextResponse.json(
-        { error: 'Hostel ID is required' },
-        { status: 400 }
-      );
+      try {
+        const allDues = await sql`
+          SELECT 
+            d.id,
+            c.name,
+            COALESCE(r.room_number, 'No Room') as room,
+            d.amount,
+            TO_CHAR(d.due_date, 'YYYY-MM-DD') as "dueDate",
+            COALESCE(d.paid, false) as paid
+          FROM dues d
+          JOIN customers c ON d.customer_id = c.id
+          LEFT JOIN rooms r ON c.room_id = r.id
+          ORDER BY d.due_date ASC, c.name ASC
+        `;
+        
+        console.log('All dues found:', allDues.length);
+        return NextResponse.json(allDues);
+      } catch (queryError) {
+        console.log('No dues found, returning empty array');
+        return NextResponse.json([]);
+      }
     }
 
     // Clean up hostel ID - remove spaces and ensure proper UUID format

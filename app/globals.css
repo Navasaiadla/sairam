@@ -299,6 +299,7 @@ input[type="submit"]:active {
 .room-card {
   transition: all 0.3s ease;
   transform: translateY(0);
+  position: relative;
 }
 
 .room-card:hover {
@@ -306,24 +307,34 @@ input[type="submit"]:active {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
+.room-card.selected {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.room-card.selected:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
 .guest-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
+  border: 1px solid #fdba74;
   transition: all 0.2s ease;
 }
 
 .guest-card:hover {
-  background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+  background: linear-gradient(135deg, #ffedd5 0%, #fbbf24 100%);
   transform: translateY(-1px);
 }
 
 .dark .guest-card {
-  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-  border: 1px solid #475569;
+  background: linear-gradient(135deg, #7c2d12 0%, #92400e 100%);
+  border: 1px solid #ea580c;
 }
 
 .dark .guest-card:hover {
-  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+  background: linear-gradient(135deg, #92400e 0%, #ea580c 100%);
 }
 
 /* Quiet info row on white */

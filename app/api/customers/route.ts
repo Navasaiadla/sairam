@@ -104,7 +104,12 @@ export async function POST(request: Request) {
     }
 
     // Clean up hostel ID - remove spaces and ensure proper UUID format
-    const hostelId = originalHostelId.replace(/\s+/g, '').replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, '$1-$2-$3-$4-$5');
+    let hostelId = originalHostelId.replace(/\s+/g, '');
+    
+    // If it's not already in UUID format, try to format it
+    if (!hostelId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+      hostelId = hostelId.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, '$1-$2-$3-$4-$5');
+    }
     
     console.log('Customer creation - Original hostel ID:', originalHostelId);
     console.log('Customer creation - Cleaned hostel ID:', hostelId);
