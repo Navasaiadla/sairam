@@ -79,10 +79,10 @@ export async function POST(request: Request) {
       dueDate,
       checkoutDate, 
       roomNo, 
-      hostelId 
+      hostelId: originalHostelId 
     } = await request.json();
 
-    if (!hostelId) {
+    if (!originalHostelId) {
       return NextResponse.json(
         { error: 'Hostel ID is required' },
         { status: 400 }
@@ -90,8 +90,7 @@ export async function POST(request: Request) {
     }
 
     // Clean up hostel ID - remove spaces and ensure proper UUID format
-    const originalHostelId = hostelId;
-    hostelId = hostelId.replace(/\s+/g, '').replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, '$1-$2-$3-$4-$5');
+    const hostelId = originalHostelId.replace(/\s+/g, '').replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, '$1-$2-$3-$4-$5');
     
     console.log('Customer creation - Original hostel ID:', originalHostelId);
     console.log('Customer creation - Cleaned hostel ID:', hostelId);
