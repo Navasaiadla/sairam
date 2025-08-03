@@ -41,7 +41,14 @@ export async function GET(request: Request) {
     console.log('Dues table exists:', tableExists[0].exists);
 
     // Test 4: If dues table exists, try to get some data
-    let duesData = [];
+    let duesData: Array<{
+      id: string;
+      name: string;
+      amount: number;
+      due_date: string;
+      paid: boolean;
+    }> = [];
+    
     if (tableExists[0].exists) {
       try {
         duesData = await sql`
