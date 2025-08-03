@@ -1,8 +1,34 @@
 @import "tailwindcss";
 
+/* Minimal Light Theme: pure white background + black text; color only inside boxes */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #ffffff;           /* solid white everywhere */
+  --topbar: linear-gradient(90deg, #8b5cf6 0%, #a855f7 50%, #ec4899 100%);
+
+  /* Text strictly dark for readability */
+  --foreground: #000000;           /* body text forced to pure black */
+  --heading: #000000;              /* headings forced to pure black */
+  --muted-foreground: #000000;     /* subtitles forced to pure black */
+  --subtle: #000000;               /* helper text forced to pure black */
+  --link: #000000;                 /* links forced to black */
+  --link-hover: #000000;           /* link hover remains black */
+
+  /* Boxes (cards) have light tinted backgrounds; page remains white */
+  --surface: #ffffff;              /* default card */
+  --surface-tint-green: #ecfdf5;   /* box tint */
+  --surface-tint-orange: #fff7ed;
+  --surface-tint-blue: #eff6ff;
+
+  --border: #e5e7eb;               /* light border on white */
+  --card-shadow: 0 6px 24px rgba(17, 24, 39, 0.06);
+
+  --accent: #6366f1;
+  --accent-600: #4f46e5;
+  --accent-700: #4338ca;
+  --accent-ring: 0 0 0 4px rgba(79, 70, 229, 0.2);
+
+  --warn: #f97316;
+  --success: #16a34a;
 }
 
 @theme inline {
@@ -12,15 +38,422 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Optional dark variables retained but page default is light/white */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* keep background swap if desired, but force text to black */
+    --background: #0b1020;
+    --foreground: #000000;
+    --muted-foreground: #000000;
+    --heading: #000000;
+    --subtle: #000000;
+    --link: #000000;
+    --link-hover: #000000;
   }
+}
+
+/* Manual theme overrides driven by html[data-theme] */
+html[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #000000;
+  --muted-foreground: #000000;
+  --heading: #000000;
+  --subtle: #000000;
+  --link: #000000;
+  --link-hover: #000000;
+}
+
+html[data-theme="dark"] {
+  --background: #0b1020;
+  --topbar: linear-gradient(90deg, #7c3aed 0%, #6d28d9 50%, #db2777 100%);
+  --surface: #0f172a;
+  --muted-surface: #0b1220;
+  --card-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+
+  /* FORCE BLACK TEXT IN DARK THEME */
+  --foreground: #000000;
+  --muted-foreground: #000000;
+  --heading: #000000;
+  --subtle: #000000;
+  --link: #000000;
+  --link-hover: #000000;
+
+  --accent: #a78bfa;
+  --accent-600: #8b5cf6;
+  --accent-700: #7c3aed;
+  --accent-ring: 0 0 0 4px rgba(167, 139, 250, 0.25);
+}
+
+html, body, #__next {
+  height: 100%;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: #000000 !important;
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Make main page feel bright and spacious on white */
+.container,
+.wrapper {
+  background: transparent;
+}
+
+.card,
+.panel,
+.section {
+  background: var(--surface);
+}
+
+/* Ensure headings/paragraphs adapt per theme for readability */
+h1, h2, h3, h4, h5, h6 {
+  color: #000000 !important;
+}
+p, small, label, span {
+  color: #000000 !important;
+}
+.muted, .text-muted {
+  color: #000000 !important;
+}
+
+/* Global containers and cards for colorful but readable UI */
+.container,
+.wrapper {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.card,
+.panel,
+.section {
+  background: var(--surface);
+  color: var(--foreground);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+}
+
+/* Colored box variants: only boxes tinted, page remains white */
+.card-green {
+  background: var(--surface-tint-green);
+  border-color: #a7f3d0;
+}
+.card-orange {
+  background: var(--surface-tint-orange);
+  border-color: #fed7aa;
+}
+.card-blue {
+  background: var(--surface-tint-blue);
+  border-color: #bfdbfe;
+}
+/* Add purple for 4th tile */
+.card-purple {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+}
+html[data-theme="light"] .card-green { color: #000000; }
+html[data-theme="light"] .card-orange { color: #000000; }
+html[data-theme="light"] .card-blue { color: #000000; }
+html[data-theme="light"] .card-purple { color: #000000; }
+
+.header-gradient {
+  background: var(--topbar);
+  border: 0;
+  border-radius: 18px;
+  color: #fff;
+  box-shadow:
+    0 12px 24px rgba(139, 92, 246, 0.25),
+    0 2px 6px rgba(16, 24, 40, 0.06);
+  padding-block: 20px;
+}
+
+/* Buttons: simple high-contrast on white */
+.button,
+.btn,
+button,
+input[type="submit"] {
+  background: #111111;
+  color: #ffffff;
+  border: 1px solid #111111;
+  padding: 0.8rem 1.1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.button:hover,
+.btn:hover,
+button:hover,
+input[type="submit"]:hover {
+  background: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.button:active,
+.btn:active,
+button:active,
+input[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Secondary button (outlined) */
+.btn-secondary {
+  background: #ffffff;
+  color: #111111;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Delete button styling */
+.delete-btn {
+  background: transparent;
+  color: #ef4444;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn:hover {
+  background: #fef2f2;
+  color: #dc2626;
+  transform: scale(1.05);
+}
+
+.delete-btn:active {
+  transform: scale(0.95);
+}
+
+.delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Profile Edit Button Styling */
+.profile-edit-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.profile-edit-btn:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  color: white;
+  text-decoration: none;
+}
+
+.profile-edit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Room Cards Styling */
+.room-card {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+.room-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.guest-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.guest-card:hover {
+  background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+  transform: translateY(-1px);
+}
+
+.dark .guest-card {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border: 1px solid #475569;
+}
+
+.dark .guest-card:hover {
+  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+}
+
+/* Quiet info row on white */
+.info-row {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid rgba(2, 6, 23, 0.08);
+}
+
+.button:focus-visible,
+.btn:focus-visible,
+button:focus-visible,
+input[type="submit"]:focus-visible {
+  outline: none;
+  box-shadow: var(--accent-ring);
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+  background: #ffffff; /* lighter field on white pages */
+  color: var(--foreground);
+  border: 1px solid rgba(2, 6, 23, 0.12);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(2, 6, 23, 0.45); /* clearer placeholder on white */
+}
+
+/* Dark theme inputs */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background: #0f172a;
+  color: #e6e7ee;
+  border-color: rgba(226, 232, 240, 0.12);
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: rgba(226, 232, 240, 0.55);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: var(--accent-ring);
+  background: #ffffff;
+}
+
+/* Links */
+a {
+  color: #000000;
+  font-weight: 700; /* make links darker/bolder */
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000000;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Utility paddings for sections so pages breathe more */
+.section-pad {
+  padding: 1.1rem;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.muted {
+  color: var(--muted-foreground);
+}
+
+.hr {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(2,6,23,0.15), transparent);
+  margin: 8px 0 12px;
+}
+
+/* Dashboard-like stat card styling helpers (optional) */
+.stat {
+  display: grid;
+  gap: 4px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--warn);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+}
+
+.kpi {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent-600);
+  letter-spacing: -0.02em;
+}
+
+footer * {
+  color: #000000 !important;
+}
+
+@media (min-width: 640px) {
+  .section-pad {
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-pad {
+    padding: 1.5rem;
+  }
 }
